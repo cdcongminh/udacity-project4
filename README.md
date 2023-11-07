@@ -25,3 +25,11 @@ npm install
 
 npm run start
 ```
+
+## Test
+
+ApiId: s648ymi29f
+
+Link: https://s648ymi29f.execute-api.us-east-1.amazonaws.com/dev
+
+Video:

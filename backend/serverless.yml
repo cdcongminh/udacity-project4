@@ -13,7 +13,7 @@ provider:
   profile: default
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
-
+  
   tracing:
     lambda: true
     apiGateway: true

@@ -11,7 +11,8 @@ import {
   Icon,
   Input,
   Image,
-  Loader
+  Loader,
+  Message
 } from 'semantic-ui-react'
 
 import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
@@ -27,13 +28,15 @@ interface TodosState {
   todos: Todo[]
   newTodoName: string
   loadingTodos: boolean
+  msg: string
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',
-    loadingTodos: true
+    loadingTodos: true,
+    msg: '',
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,15 +49,24 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
-      const dueDate = this.calculateDueDate()
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
-        name: this.state.newTodoName,
-        dueDate
-      })
-      this.setState({
-        todos: [...this.state.todos, newTodo],
-        newTodoName: ''
-      })
+      const inputValue = this.state.newTodoName;
+      if (!inputValue || inputValue.trim().length == 0) {
+        this.setState({
+          ...this.state,
+          msg: 'error',
+        })
+      } else {
+        const dueDate = this.calculateDueDate()
+        const newTodo = await createTodo(this.props.auth.getIdToken(), {
+          name: this.state.newTodoName,
+          dueDate
+        })
+        this.setState({
+          todos: [...this.state.todos, newTodo],
+          newTodoName: '',
+          msg: '',
+        })
+      }
     } catch {
       alert('Todo creation failed')
     }
@@ -117,6 +129,14 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     return (
       <Grid.Row>
         <Grid.Column width={16}>
+          {this.state.msg && <Message icon>
+            <Icon name='circle notched' loading />
+            <Message.Content color='red' style={{ color: 'red' }}>
+              <Message.Header>Message</Message.Header>
+              Please enter a value
+            </Message.Content>
+          </Message> }
+
           <Input
             action={{
               color: 'teal',
@@ -131,6 +151,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             onChange={this.handleNameChange}
           />
         </Grid.Column>
+        
         <Grid.Column width={16}>
           <Divider />
         </Grid.Column>

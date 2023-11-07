@@ -28,8 +28,8 @@ npm run start
 
 ## Test
 
-ApiId: s648ymi29f
+ApiId: dyinhevdm4
 
-Link: https://s648ymi29f.execute-api.us-east-1.amazonaws.com/dev
+Test Link: https://dyinhevdm4.execute-api.us-east-1.amazonaws.com/dev
 
 Video:
